@@ -2,27 +2,17 @@
 
 
 
-// development:
-// @use "node_modules/@heymarco/sass-class-template/index" as *;
-// @use "node_modules/@heymarco/sass-selector/index"       as selector;
-// @use "node_modules/@heymarco/control/index"             as base;
-// @use "node_modules/@heymarco/element/index"             as element;
-// @use "node_modules/@heymarco/colors/index"              as color;
-// @use "node_modules/@heymarco/spacer/index"              as spacer;
-// @use "node_modules/@heymarco/border/index"              as border;
-
-// production:
-@use "../../../node_modules/@heymarco/sass-class-template/index" as *;
-@use "../../../node_modules/@heymarco/sass-selector/index"       as selector;
-@use "../../../node_modules/@heymarco/control/index"             as base;
-@use "../../../node_modules/@heymarco/element/index"             as element;
-@use "../../../node_modules/@heymarco/colors/index"              as color;
-@use "../../../node_modules/@heymarco/spacer/index"              as spacer;
-@use "../../../node_modules/@heymarco/border/index"              as border;
+@use "~@nodestrap/sass-class-template/src/index" as *;
+@use "~@nodestrap/sass-selector/src/index"       as selector;
+@use "~@nodestrap/control/src/index"             as base;
+@use "~@nodestrap/element/src/index"             as element;
+@use "~@nodestrap/colors/src/index"              as color;
+@use "~@nodestrap/spacer/src/index"              as spacer;
+@use "~@nodestrap/border/src/index"              as border;
 
 
 
-$alias              : "%button-base"                        !default;
+$alias              : "%button"                             !default;
 $class              : ".btn"                                !default;
 $var-root           : base.$var-root                        !default;
 $var-prefix         : "btn"                                 !default;
@@ -354,5 +344,4 @@ $cssvar: make-cssvar($var-prefix, $var-prefix-base);
 
 
 
-// abstract class => no emit class
-// @include class($alias, $class, base.$class);
+@include class($alias, $class, base.$class);

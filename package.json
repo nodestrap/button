@@ -1,14 +1,44 @@
 {
-  "name": "@heymarco/button",
-  "version": "1.0.1",
-  "description": "A button UI with built in icon set.",
-  "main": "index.js",
+  "name": "@nodestrap/button",
+  "version": "0.0.1",
+  "description": "A button UI for actions in forms, dialogs, and more with support for multiple sizes, states, and more.",
+  "dependencies": {
+    "@nodestrap/border": "^2.0.0",
+    "@nodestrap/colors": "^2.0.1",
+    "@nodestrap/control": "^2.0.17",
+    "@nodestrap/element": "^2.0.17",
+    "@nodestrap/sass-class-template": "^2.0.2",
+    "@nodestrap/sass-selector": "^2.0.1",
+    "@nodestrap/spacer": "^2.0.0",
+    "react": "^17.0.1"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/react": "^11.2.3",
+    "@testing-library/user-event": "^12.6.0",
+    "@types/jest": "^26.0.20",
+    "@types/node": "^14.14.21",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "react-dom": "^17.0.1",
+    "react-scripts": "^4.0.1",
+    "tilde-sass": "^1.0.0",
+    "typescript": "^4.1.3"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "react-scripts test",
+    "testsass": "tilde-sass --file src/*.scss --outFile test/",
+    "compile": "tilde-sass --file src/*.scss --outFile dist/ --outputStyle compressed"
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\](?!@nodestrap[/\\\\].+[/\\\\](dist|src)[/\\\\](.+[/\\\\])*).+[.](js|mjs|jsx|ts|tsx|cjs)$",
+      "^.+[.]module[.](css|sass|scss)$"
+    ]
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/heyymarco/button.git"
+    "url": "git+https://github.com/nodestrap/button.git"
   },
   "keywords": [
     "button",
@@ -16,21 +46,10 @@
     "ui",
     "control"
   ],
-  "author": "HeyMarco",
+  "author": "nodestrap, heymarco",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/heyymarco/button/issues"
+    "url": "https://github.com/nodestrap/button/issues"
   },
-  "homepage": "https://github.com/heyymarco/button#readme",
-  "dependencies": {
-    "@heymarco/border": "^1.0.8",
-    "@heymarco/colors": "^1.0.16",
-    "@heymarco/control": "^1.0.16",
-    "@heymarco/element": "^1.0.13",
-    "@heymarco/element-config": "^1.0.3",
-    "@heymarco/icon": "^1.0.10",
-    "@heymarco/sass-class-template": "^1.0.7",
-    "@heymarco/sass-selector": "^1.0.5",
-    "@heymarco/spacer": "^1.0.6"
-  }
+  "homepage": "https://github.com/nodestrap/button#readme"
 }
