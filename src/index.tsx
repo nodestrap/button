@@ -1,10 +1,20 @@
 import React from 'react';
-import Base, { Props as Base_Props, State as Base_State } from '@nodestrap/control/src/index';
+import Base, {
+    VariantSize  as Base_VariantSize,
+    VariantTheme as Base_VariantTheme,
+    Props        as Base_Props,
+    State        as Base_State
+} from '@nodestrap/control/src/index';
 import './index.scss';
 
 
 
-export interface Props extends Base_Props {
+export interface VariantSize  extends Base_VariantSize  { }
+export interface VariantTheme extends Base_VariantTheme { }
+
+
+
+export interface Props extends Base_Props, VariantSize, VariantTheme {
     text?    : string;
     onClick? : React.MouseEventHandler<HTMLButtonElement>;
 }
@@ -28,13 +38,12 @@ export default class Button<TProps extends Props, TState extends State> extends 
     render() {
         return (
             <button
-                onClick={(e)        => this.props.onClick && this.props.onClick(e)}
-
-
-                
                 className={this.compositeClassName}
-
+                
                 disabled={!this.enabled}
+
+
+                onClick={(e)        => this.props.onClick && this.props.onClick(e)}
 
                 onMouseEnter={(e)   => this.handleMouseEnter(e)}
                 onMouseLeave={(e)   => this.handleMouseLeave(e)}
