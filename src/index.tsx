@@ -5,7 +5,7 @@ import Base, {
     Props        as Base_Props,
     State        as Base_State
 } from '@nodestrap/control/src/index';
-import style from './index.scss';
+import './index.scss';
 
 
 
@@ -34,7 +34,7 @@ export default class Button<TProps extends Props = Props, TState extends State =
 
 
     /*override*/ get defaultClassName(): string {
-        return style.btn;
+        return 'btn';
     }
 
 
@@ -50,7 +50,7 @@ export default class Button<TProps extends Props = Props, TState extends State =
             (props.outline && 'outline') || ' ',
             (props.link    && 'link')    || ' ',
         ]
-        .filter(c => (c != ' ') && (c != '')) // removes blank classes
+        .filter(c => (c !== ' ') && (c !== '')) // removes blank classes
         .join(' '); // combines all classes separated by space
     }
 
