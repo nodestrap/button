@@ -5,16 +5,20 @@ import Base, {
     Props        as Base_Props,
     State        as Base_State
 } from '@nodestrap/control/src/index';
-import './index.scss';
+import style from './index.scss';
 
 
 
 export interface VariantSize  extends Base_VariantSize  { }
 export interface VariantTheme extends Base_VariantTheme { }
+export interface VariantButton {
+    outline? : boolean;
+    link?    : boolean;
+}
 
 
 
-export interface Props extends Base_Props, VariantSize, VariantTheme {
+export interface Props extends Base_Props, VariantSize, VariantTheme, VariantButton {
     text?    : string;
     onClick? : React.MouseEventHandler<HTMLButtonElement>;
 }
@@ -22,7 +26,7 @@ export interface Props extends Base_Props, VariantSize, VariantTheme {
 export interface State extends Base_State {
 }
 
-export default class Button<TProps extends Props, TState extends State> extends Base<TProps, TState> {
+export default class Button<TProps extends Props = Props, TState extends State = State> extends Base<TProps, TState> {
     constructor(props: TProps) {
         super(props);
     }
@@ -30,7 +34,24 @@ export default class Button<TProps extends Props, TState extends State> extends 
 
 
     /*override*/ get defaultClassName(): string {
-        return 'btn';
+        return style.btn;
+    }
+
+
+
+    /*override*/ get compositeClassName(): string {
+        const state = this.state;
+        const props = this.props;
+        return [
+            super.compositeClassName,
+
+            
+            // variants:
+            (props.outline && 'outline') || ' ',
+            (props.link    && 'link')    || ' ',
+        ]
+        .filter(c => (c != ' ') && (c != '')) // removes blank classes
+        .join(' '); // combines all classes separated by space
     }
 
 
