@@ -26,13 +26,10 @@ export interface Props extends Base_Props, VariantSize, VariantTheme, VariantBut
 export interface State extends Base_State {
 }
 
+/**
+ * A button UI for actions in forms, dialogs, and more with support for multiple sizes, states, and more.
+ */
 export default class Button<TProps extends Props = Props, TState extends State = State> extends Base<TProps, TState> {
-    constructor(props: TProps) {
-        super(props);
-    }
-
-
-
     /*override*/ get defaultClassName(): string {
         return 'btn';
     }
