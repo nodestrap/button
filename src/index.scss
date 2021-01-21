@@ -344,4 +344,4 @@ $cssvar: make-cssvar($var-prefix, $var-prefix-base);
 
 
 
-@include class($alias, $class, base.$class);
+@include class($alias, $class);
