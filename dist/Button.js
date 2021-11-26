@@ -285,26 +285,20 @@ export function Button(props) {
     const semanticRole = props.semanticRole ?? (props.href ? 'link' : 'button');
     const [, , , isSemanticBtn] = useTestSemantic({ tag: props.tag, role: props.role, semanticTag, semanticRole }, { semanticTag: 'button', semanticRole: 'button' });
     // jsx:
-    return (<ActionControl 
-    // other props:
-    {...restProps} 
-    // semantics:
-    semanticTag={semanticTag} semanticRole={semanticRole} aria-label={props['aria-label'] ?? label} 
-    // accessibilities:
-    enabled={props.enabled ?? !(props.disabled ?? false)} press={props.press ?? active} 
-    // variants:
-    mild={props.mild ?? false} 
-    // classes:
-    mainClass={props.mainClass ?? sheet.main} variantClasses={[...(props.variantClasses ?? []),
+    return (React.createElement(ActionControl, { ...restProps, 
+        // semantics:
+        semanticTag: semanticTag, semanticRole: semanticRole, "aria-label": props['aria-label'] ?? label, 
+        // accessibilities:
+        enabled: props.enabled ?? !(props.disabled ?? false), press: props.press ?? active, 
+        // variants:
+        mild: props.mild ?? false, 
+        // classes:
+        mainClass: props.mainClass ?? sheet.main, variantClasses: [...(props.variantClasses ?? []),
             orientationVariant.class,
             buttonVariant.class,
-        ]} 
-    // Button props:
-    {...{
-        // actions:
-        type: props.type ?? (isSemanticBtn ? 'button' : undefined),
-    }}>
-            {props.children}
-        </ActionControl>);
+        ], ...{
+            // actions:
+            type: props.type ?? (isSemanticBtn ? 'button' : undefined),
+        } }, props.children));
 }
 export { Button as default };
