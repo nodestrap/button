@@ -281,8 +281,8 @@ export function Button(props) {
     // accessibilities:
     label, active, ...restProps } = props;
     // fn props:
-    const semanticTag = props.semanticTag ?? (props.href ? 'a' : 'button');
-    const semanticRole = props.semanticRole ?? (props.href ? 'link' : 'button');
+    const semanticTag = props.semanticTag ?? (props.href ? 'a' : ['button', 'a']);
+    const semanticRole = props.semanticRole ?? (props.href ? 'link' : ['button', 'link']);
     const [, , , isSemanticBtn] = useTestSemantic({ tag: props.tag, role: props.role, semanticTag, semanticRole }, { semanticTag: 'button', semanticRole: 'button' });
     // jsx:
     return (React.createElement(ActionControl, { ...restProps, 
