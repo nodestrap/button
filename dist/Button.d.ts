@@ -9,10 +9,10 @@ export interface ButtonVariant {
 export declare const useButtonVariant: (props: ButtonVariant) => {
     class: ButtonStyle | null;
 };
-export declare const noBackground: () => import("@cssfn/cssfn").StyleCollection;
-export declare const usesButtonLayout: (options?: OrientationRuleOptions | undefined) => import("@cssfn/cssfn").StyleCollection;
-export declare const usesButtonVariants: () => import("@cssfn/cssfn").StyleCollection;
-export declare const usesButtonStates: () => import("@cssfn/cssfn").StyleCollection;
+export declare const noBackground: () => import("@cssfn/cssfn").Rule;
+export declare const usesButtonLayout: (options?: OrientationRuleOptions | undefined) => import("@cssfn/cssfn").Rule;
+export declare const usesButtonVariants: () => import("@cssfn/cssfn").Rule;
+export declare const usesButtonStates: () => import("@cssfn/cssfn").Rule;
 export declare const useButtonSheet: import("@cssfn/types").Factory<import("jss").Classes<"main">>;
 export declare const cssProps: import("@cssfn/css-config").Refs<{
     gapInline: import("@cssfn/css-types").Cust.Ref;

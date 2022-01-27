@@ -3,11 +3,11 @@ import { default as React, } from 'react'; // base technology of our nodestrap c
 // cssfn:
 import { 
 // compositions:
-composition, mainComposition, imports, 
-// layouts:
-layout, vars, 
+mainComposition, 
+// styles:
+style, vars, imports, 
 // rules:
-variants, states, rule, isNotHover, } from '@cssfn/cssfn'; // cssfn core
+rule, variants, states, isNotHover, } from '@cssfn/cssfn'; // cssfn core
 import { 
 // hooks:
 createUseSheet, } from '@cssfn/react-cssfn'; // cssfn for react
@@ -48,55 +48,60 @@ export const noBackground = () => {
     // dependencies:
     // borders:
     const [, , borderStrokeDecls] = usesBorderStroke();
-    return composition([
-        variants([
-            notOutlined([
-                imports([
+    return style({
+        ...variants([
+            notOutlined({
+                ...imports([
                     outlinedOf(true), // keeps outlined variant
                 ]),
-                layout({
+                ...style({
                     // borders:
                     [borderStrokeDecls.borderWidth]: '0px', // noBorder if not explicitly `.outlined`
                 }),
-            ]),
+            }),
         ]),
-        states([
-            isActive([
-                imports([
+        ...states([
+            isActive({
+                ...imports([
                     outlinedOf(true), // keeps outlined variant
                 ]),
-            ]),
-            isFocus([
-                imports([
+            }),
+            isFocus({
+                ...imports([
                     outlinedOf(true), // keeps outlined variant
                 ]),
-            ]),
-            isArrive([
-                imports([
+            }),
+            isArrive({
+                ...imports([
                     outlinedOf(true), // keeps outlined variant
                 ]),
-            ]),
-            isPress([
-                imports([
+            }),
+            isPress({
+                ...imports([
                     outlinedOf(true), // keeps outlined variant
                 ]),
-            ]),
+            }),
         ]),
-    ]);
+    });
 };
 export const usesButtonLayout = (options) => {
     // options:
     options = normalizeOrientationRule(options, defaultOrientationRuleOptions);
     const [orientationBlockSelector, orientationInlineSelector] = usesOrientationRule(options);
-    return composition([
-        imports([
+    return style({
+        ...imports([
             // layouts:
             usesActionControlLayout(),
         ]),
-        layout({
+        ...style({
             // layouts:
             display: 'inline-flex',
-            // flexDirection  : 'row',         // customizable orientation // already defined in variant `.block`/`.inline`
+            ...rule(orientationBlockSelector, {
+                flexDirection: 'column', // items are stacked vertically
+            }),
+            ...rule(orientationInlineSelector, {
+                flexDirection: 'row', // items are stacked horizontally
+            }),
             justifyContent: 'center',
             alignItems: 'center',
             flexWrap: 'wrap',
@@ -107,32 +112,15 @@ export const usesButtonLayout = (options) => {
             // customize:
             ...usesGeneralProps(cssProps), // apply general cssProps
         }),
-        variants([
-            /* the orientation variants are part of the layout, because without these variants the layout is broken */
-            rule(orientationBlockSelector, [
-                layout({
-                    // layouts:
-                    flexDirection: 'column', // items are stacked vertically
-                }),
-            ]),
-            rule(orientationInlineSelector, [
-                layout({
-                    // layouts:
-                    flexDirection: 'row', // items are stacked horizontally
-                }),
-            ]),
-        ]),
-    ]);
+    });
 };
 export const usesButtonVariants = () => {
     // dependencies:
     // layouts:
-    const [sizes] = usesSizeVariant((sizeName) => composition([
-        layout({
-            // overwrites propName = propName{SizeName}:
-            ...overwriteProps(cssDecls, usesSuffixedProps(cssProps, sizeName)),
-        }),
-    ]));
+    const [sizes] = usesSizeVariant((sizeName) => style({
+        // overwrites propName = propName{SizeName}:
+        ...overwriteProps(cssDecls, usesSuffixedProps(cssProps, sizeName)),
+    }));
     // colors:
     const [, outlinedRefs] = usesOutlinedVariant();
     const [, mildRefs] = usesMildVariant();
@@ -141,25 +129,25 @@ export const usesButtonVariants = () => {
     const [, , borderRadiusDecls] = usesBorderRadius();
     // spacings:
     const [, , paddingDecls] = usesPadding();
-    return composition([
-        imports([
+    return style({
+        ...imports([
             // variants:
             usesActionControlVariants(),
             // layouts:
             sizes(),
         ]),
-        variants([
-            rule(['.link', '.icon', '.ghost'], [
-                imports([
+        ...variants([
+            rule(['.link', '.icon', '.ghost'], {
+                ...imports([
                     noBackground(),
                 ]),
-            ]),
-            rule(['.link', '.icon'], [
-                imports([
+            }),
+            rule(['.link', '.icon'], {
+                ...imports([
                     // colors:
                     usesThemeActive(), // set the active theme as the default theme
                 ]),
-                layout({
+                ...style({
                     // borders:
                     // small rounded corners on top:
                     [borderRadiusDecls.borderStartStartRadius]: borderRadiuses.sm,
@@ -176,19 +164,19 @@ export const usesButtonVariants = () => {
                     // customize:
                     ...usesGeneralProps(usesPrefixedProps(cssProps, 'link')), // apply general cssProps starting with link***
                 }),
-                variants([
-                    notOutlined([
-                        imports([
+                ...variants([
+                    notOutlined({
+                        ...imports([
                             // backgrounds:
                             gradientOf(false), // gradient is not supported if not `.outlined`
                         ]),
-                    ]),
+                    }),
                 ]),
-            ]),
-            rule('.icon', [
-                variants([
-                    notOutlined([
-                        vars({
+            }),
+            rule('.icon', {
+                ...variants([
+                    notOutlined({
+                        ...vars({
                             /*
                                 `noBackground()` is causing `.outlined` actived
                                 => currentColor = theme color
@@ -197,58 +185,54 @@ export const usesButtonVariants = () => {
                             */
                             [foregDecls.foreg]: mildRefs.foregFn,
                         }),
-                    ]),
-                    isOutlined([
-                        vars({
+                    }),
+                    isOutlined({
+                        ...vars({
                             [foregDecls.foreg]: outlinedRefs.foregFn,
                         }),
-                    ]),
+                    }),
                 ]),
-            ]),
-            rule('.ghost', [
-                layout({
+            }),
+            rule('.ghost', {
+                ...style({
                     // borders:
                     boxShadow: 'none !important',
                     // customize:
                     ...usesGeneralProps(usesPrefixedProps(cssProps, 'ghost')), // apply general cssProps starting with ghost***
                 }),
-                states([
-                    isNotHover([
-                        imports([
+                ...states([
+                    isNotHover({
+                        ...imports([
                             // backgrounds:
                             gradientOf(false), // hides the gradient to increase invisibility
                         ]),
-                    ]),
-                    isArrive([
-                        layout({
-                            // appearances:
-                            opacity: cssProps.ghostOpacityArrive, // increase the opacity to increase visibility
-                        }),
-                    ]),
+                    }),
+                    isArrive({
+                        // appearances:
+                        opacity: cssProps.ghostOpacityArrive, // increase the opacity to increase visibility
+                    }),
                 ]),
-            ]),
+            }),
         ]),
-    ]);
+    });
 };
 export const usesButtonStates = () => {
-    return composition([
-        imports([
+    return style({
+        ...imports([
             // states:
             usesActionControlStates(),
         ]),
-    ]);
+    });
 };
 export const useButtonSheet = createUseSheet(() => [
-    mainComposition([
-        imports([
-            // layouts:
-            usesButtonLayout(),
-            // variants:
-            usesButtonVariants(),
-            // states:
-            usesButtonStates(),
-        ]),
-    ]),
+    mainComposition(imports([
+        // layouts:
+        usesButtonLayout(),
+        // variants:
+        usesButtonVariants(),
+        // states:
+        usesButtonStates(),
+    ])),
 ], /*sheetId :*/ '7rehb2h20q'); // an unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 // configs:
 export const [cssProps, cssDecls, cssVals, cssConfig] = createCssConfig(() => {
@@ -289,7 +273,7 @@ export function Button(props) {
         // semantics:
         semanticTag: semanticTag, semanticRole: semanticRole, "aria-label": props['aria-label'] ?? label, 
         // accessibilities:
-        enabled: props.enabled ?? !(props.disabled ?? false), press: props.press ?? active, 
+        enabled: props.enabled ?? !(props.disabled ?? false), press: props.press ?? (active || undefined), 
         // variants:
         mild: props.mild ?? false, 
         // classes:
