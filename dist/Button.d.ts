@@ -11,6 +11,7 @@ export declare const useButtonVariant: (props: ButtonVariant) => {
 };
 export declare const noBackground: () => import("@cssfn/cssfn").Rule;
 export declare const usesButtonLayout: (options?: OrientationRuleOptions | undefined) => import("@cssfn/cssfn").Rule;
+export declare const usesButtonLinkVariant: () => import("@cssfn/cssfn").Rule;
 export declare const usesButtonVariants: () => import("@cssfn/cssfn").Rule;
 export declare const usesButtonStates: () => import("@cssfn/cssfn").Rule;
 export declare const useButtonSheet: import("@cssfn/types").Factory<import("jss").Classes<"main">>;

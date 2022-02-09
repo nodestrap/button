@@ -17,6 +17,7 @@ usesGeneralProps, usesPrefixedProps, usesSuffixedProps, overwriteProps, } from '
 // nodestrap utilities:
 import { borderRadiuses, } from '@nodestrap/borders'; // configurable borders & border radiuses defs
 import spacers from '@nodestrap/spacers'; // configurable spaces defs
+import { stripoutLink, } from '@nodestrap/stripouts';
 // nodestrap components:
 import { 
 // hooks:
@@ -51,9 +52,6 @@ export const noBackground = () => {
     return style({
         ...variants([
             notOutlined({
-                ...imports([
-                    outlinedOf(true), // keeps outlined variant
-                ]),
                 ...style({
                     // borders:
                     [borderStrokeDecls.borderWidth]: '0px', // noBorder if not explicitly `.outlined`
@@ -82,6 +80,13 @@ export const noBackground = () => {
                 ]),
             }),
         ]),
+        ...variants([
+            notOutlined({
+                ...imports([
+                    outlinedOf(true), // keeps outlined variant
+                ]),
+            }),
+        ], { minSpecificityWeight: 4 }), // force to win with states' specificity weight
     });
 };
 export const usesButtonLayout = (options) => {
@@ -90,6 +95,8 @@ export const usesButtonLayout = (options) => {
     const [orientationBlockSelector, orientationInlineSelector] = usesOrientationRule(options);
     return style({
         ...imports([
+            // resets:
+            stripoutLink(),
             // layouts:
             usesActionControlLayout(),
         ]),
@@ -114,6 +121,46 @@ export const usesButtonLayout = (options) => {
         }),
     });
 };
+export const usesButtonLinkVariant = () => {
+    // dependencies:
+    // borders:
+    const [, , borderRadiusDecls] = usesBorderRadius();
+    // spacings:
+    const [, , paddingDecls] = usesPadding();
+    return style({
+        ...imports([
+            // backgrounds:
+            noBackground(),
+            // colors:
+            usesThemeActive(), // set the active theme as the default theme
+        ]),
+        ...style({
+            // borders:
+            // small rounded corners on top:
+            [borderRadiusDecls.borderStartStartRadius]: borderRadiuses.sm,
+            [borderRadiusDecls.borderStartEndRadius]: borderRadiuses.sm,
+            // small rounded corners on bottom:
+            [borderRadiusDecls.borderEndStartRadius]: borderRadiuses.sm,
+            [borderRadiusDecls.borderEndEndRadius]: borderRadiuses.sm,
+            // spacings:
+            [paddingDecls.paddingInline]: spacers.xs,
+            [paddingDecls.paddingBlock]: spacers.xs,
+            // typos:
+            textDecoration: 'underline',
+            lineHeight: 1,
+            // customize:
+            ...usesGeneralProps(usesPrefixedProps(cssProps, 'link')), // apply general cssProps starting with link***
+        }),
+        ...variants([
+            notOutlined({
+                ...imports([
+                    // backgrounds:
+                    gradientOf(false), // gradient is not supported if not `.outlined`
+                ]),
+            }),
+        ]),
+    });
+};
 export const usesButtonVariants = () => {
     // dependencies:
     // layouts:
@@ -125,10 +172,6 @@ export const usesButtonVariants = () => {
     const [, outlinedRefs] = usesOutlinedVariant();
     const [, mildRefs] = usesMildVariant();
     const [, , foregDecls] = usesForeg();
-    // borders:
-    const [, , borderRadiusDecls] = usesBorderRadius();
-    // spacings:
-    const [, , paddingDecls] = usesPadding();
     return style({
         ...imports([
             // variants:
@@ -144,33 +187,7 @@ export const usesButtonVariants = () => {
             }),
             rule(['.link', '.icon'], {
                 ...imports([
-                    // colors:
-                    usesThemeActive(), // set the active theme as the default theme
-                ]),
-                ...style({
-                    // borders:
-                    // small rounded corners on top:
-                    [borderRadiusDecls.borderStartStartRadius]: borderRadiuses.sm,
-                    [borderRadiusDecls.borderStartEndRadius]: borderRadiuses.sm,
-                    // small rounded corners on bottom:
-                    [borderRadiusDecls.borderEndStartRadius]: borderRadiuses.sm,
-                    [borderRadiusDecls.borderEndEndRadius]: borderRadiuses.sm,
-                    // spacings:
-                    [paddingDecls.paddingInline]: spacers.xs,
-                    [paddingDecls.paddingBlock]: spacers.xs,
-                    // typos:
-                    textDecoration: 'underline',
-                    lineHeight: 1,
-                    // customize:
-                    ...usesGeneralProps(usesPrefixedProps(cssProps, 'link')), // apply general cssProps starting with link***
-                }),
-                ...variants([
-                    notOutlined({
-                        ...imports([
-                            // backgrounds:
-                            gradientOf(false), // gradient is not supported if not `.outlined`
-                        ]),
-                    }),
+                    usesButtonLinkVariant(),
                 ]),
             }),
             rule('.icon', {

@@ -1,6 +1,6 @@
 {
   "name": "@nodestrap/button",
-  "version": "4.0.5",
+  "version": "4.0.6",
   "description": "A clickable component for initiating an action.",
   "type": "module",
   "main": "dist/Button.js",
@@ -31,7 +31,7 @@
   "homepage": "https://github.com/nodestrap/button#readme",
   "dependencies": {
     "@cssfn/css-config": "^1.0.4",
-    "@cssfn/cssfn": "^1.0.10",
+    "@cssfn/cssfn": "^1.0.12",
     "@cssfn/react-cssfn": "^1.0.11",
     "@nodestrap/action-control": "^4.0.17",
     "@nodestrap/basic": "^4.0.7",
@@ -40,7 +40,8 @@
     "@nodestrap/element": "^4.0.7",
     "@nodestrap/indicator": "^4.0.7",
     "@nodestrap/spacers": "^4.0.2",
-    "@types/react": "^17.0.38",
+    "@nodestrap/stripouts": "^4.0.2",
+    "@types/react": "^17.0.39",
     "react": "^17.0.2"
   }
 }
