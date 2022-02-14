@@ -17,7 +17,6 @@ usesGeneralProps, usesPrefixedProps, usesSuffixedProps, overwriteProps, } from '
 // nodestrap utilities:
 import { borderRadiuses, } from '@nodestrap/borders'; // configurable borders & border radiuses defs
 import spacers from '@nodestrap/spacers'; // configurable spaces defs
-import { stripoutLink, } from '@nodestrap/stripouts';
 // nodestrap components:
 import { 
 // hooks:
@@ -95,8 +94,6 @@ export const usesButtonLayout = (options) => {
     const [orientationBlockSelector, orientationInlineSelector] = usesOrientationRule(options);
     return style({
         ...imports([
-            // resets:
-            stripoutLink(),
             // layouts:
             usesActionControlLayout(),
         ]),

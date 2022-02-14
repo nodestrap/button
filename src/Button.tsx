@@ -44,9 +44,6 @@ import {
     borderRadiuses,
 }                           from '@nodestrap/borders'     // configurable borders & border radiuses defs
 import spacers              from '@nodestrap/spacers'     // configurable spaces defs
-import {
-    stripoutLink,
-}                           from '@nodestrap/stripouts'
 
 // nodestrap components:
 import {
@@ -186,9 +183,6 @@ export const usesButtonLayout = (options?: OrientationRuleOptions) => {
     
     return style({
         ...imports([
-            // resets:
-            stripoutLink(), // clear browser's default styles
-            
             // layouts:
             usesActionControlLayout(),
         ]),
