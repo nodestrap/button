@@ -33,6 +33,8 @@ usesThemeActive, isFocus, isArrive, } from '@nodestrap/control';
 import { 
 // hooks:
 isPress, 
+// utilities:
+isClientSideLink, 
 // styles:
 usesActionControlLayout, usesActionControlVariants, usesActionControlStates, ActionControl, } from '@nodestrap/action-control';
 // hooks:
@@ -274,20 +276,23 @@ export function Button(props) {
     const buttonVariant = useButtonVariant(props);
     // rest props:
     const { 
-    // actions:
-    type, 
     // accessibilities:
-    label, active, ...restProps } = props;
+    label, active: activeAsPress, // aliasing active to press
+    ...restProps } = props;
     // fn props:
-    const semanticTag = props.semanticTag ?? (props.href ? 'a' : ['button', 'a']);
-    const semanticRole = props.semanticRole ?? (props.href ? 'link' : ['button', 'link']);
-    const [, , , isSemanticBtn] = useTestSemantic({ tag: props.tag, role: props.role, semanticTag, semanticRole }, { semanticTag: 'button', semanticRole: 'button' });
+    const isNativeLink = !!props.href;
+    const isClientLink = !isNativeLink && !!isClientSideLink(props.children);
+    const semanticTag = props.semanticTag ?? (isNativeLink ? 'a' : ['button', 'a']);
+    const semanticRole = props.semanticRole ?? (isNativeLink ? 'link' : ['button', 'link']);
+    const tag = props.tag ?? (isClientLink ? 'a' : undefined);
+    const [, , , isSemanticBtn] = useTestSemantic({ tag, role: props.role, semanticTag, semanticRole }, { semanticTag: 'button', semanticRole: 'button' });
+    const type = props.type ?? (isSemanticBtn ? 'button' : undefined);
     // jsx:
     return (React.createElement(ActionControl, { ...restProps, 
         // semantics:
-        semanticTag: semanticTag, semanticRole: semanticRole, "aria-label": props['aria-label'] ?? label, 
+        semanticTag: semanticTag, semanticRole: semanticRole, tag: tag, "aria-label": props['aria-label'] ?? label, 
         // accessibilities:
-        enabled: props.enabled ?? !(props.disabled ?? false), press: props.press ?? (active || undefined), 
+        enabled: props.enabled ?? !(props.disabled ?? false), press: props.press ?? (activeAsPress || undefined), 
         // variants:
         mild: props.mild ?? false, 
         // classes:
@@ -296,7 +301,7 @@ export function Button(props) {
             buttonVariant.class,
         ], ...{
             // actions:
-            type: props.type ?? (isSemanticBtn ? 'button' : undefined),
+            type,
         } }, props.children));
 }
 export { Button as default };

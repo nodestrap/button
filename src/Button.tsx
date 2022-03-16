@@ -89,6 +89,11 @@ import {
     
     
     
+    // utilities:
+    isClientSideLink,
+    
+    
+    
     // styles:
     usesActionControlLayout,
     usesActionControlVariants,
@@ -446,10 +451,6 @@ export function Button(props: ButtonProps) {
     
     // rest props:
     const {
-        // actions:
-        type,
-        
-        
         // accessibilities:
         label,
         
@@ -459,9 +460,13 @@ export function Button(props: ButtonProps) {
     
     
     // fn props:
-    const semanticTag  = props.semanticTag  ?? (props.href ? 'a'    : ['button', 'a']);
-    const semanticRole = props.semanticRole ?? (props.href ? 'link' : ['button', 'link']);
-    const [, , , isSemanticBtn] = useTestSemantic({ tag: props.tag, role: props.role, semanticTag, semanticRole }, { semanticTag: 'button', semanticRole: 'button' });
+    const isNativeLink = !!props.href;
+    const isClientLink = !isNativeLink && !!isClientSideLink(props.children);
+    const semanticTag  = props.semanticTag  ?? (isNativeLink ? 'a'    : ['button', 'a'   ]);
+    const semanticRole = props.semanticRole ?? (isNativeLink ? 'link' : ['button', 'link']);
+    const tag          = props.tag  ?? (isClientLink ? 'a' : undefined);
+    const [, , , isSemanticBtn] = useTestSemantic({ tag, role: props.role, semanticTag, semanticRole }, { semanticTag: 'button', semanticRole: 'button' });
+    const type         = props.type ?? (isSemanticBtn ? 'button' : undefined);
     
     
     
@@ -475,6 +480,7 @@ export function Button(props: ButtonProps) {
             // semantics:
             semanticTag ={semanticTag }
             semanticRole={semanticRole}
+            tag         ={tag         }
             
             aria-label={props['aria-label'] ?? label}
             
@@ -499,7 +505,7 @@ export function Button(props: ButtonProps) {
             // Button props:
             {...{
                 // actions:
-                type : props.type ?? (isSemanticBtn ? 'button' : undefined),
+                type,
             }}
         >
             { props.children }
