@@ -268,6 +268,25 @@ export const [cssProps, cssDecls, cssVals, cssConfig] = createCssConfig(() => {
         ghostOpacityArrive: 1,
     };
 }, { prefix: 'btn' });
+export const useSemanticButton = (props) => {
+    // fn props:
+    const isNativeLink = !!props.href;
+    const isClientLink = !isNativeLink && !!isClientSideLink(props.children);
+    const semanticTag = props.semanticTag ?? (isNativeLink ? 'a' : ['button', 'a']);
+    const semanticRole = props.semanticRole ?? (isNativeLink ? 'link' : ['button', 'link']);
+    const tag = props.tag ?? (isClientLink ? 'a' : undefined);
+    const [, , , isSemanticBtn] = useTestSemantic({ tag, role: props.role, semanticTag, semanticRole }, { semanticTag: 'button', semanticRole: 'button' });
+    const type = props.type ?? (isSemanticBtn ? 'button' : undefined);
+    return {
+        isNativeLink,
+        isClientLink,
+        semanticTag,
+        semanticRole,
+        isSemanticBtn,
+        tag,
+        type,
+    };
+};
 export function Button(props) {
     // styles:
     const sheet = useButtonSheet();
@@ -280,13 +299,7 @@ export function Button(props) {
     label, active: activeAsPress, // aliasing active to press
     ...restProps } = props;
     // fn props:
-    const isNativeLink = !!props.href;
-    const isClientLink = !isNativeLink && !!isClientSideLink(props.children);
-    const semanticTag = props.semanticTag ?? (isNativeLink ? 'a' : ['button', 'a']);
-    const semanticRole = props.semanticRole ?? (isNativeLink ? 'link' : ['button', 'link']);
-    const tag = props.tag ?? (isClientLink ? 'a' : undefined);
-    const [, , , isSemanticBtn] = useTestSemantic({ tag, role: props.role, semanticTag, semanticRole }, { semanticTag: 'button', semanticRole: 'button' });
-    const type = props.type ?? (isSemanticBtn ? 'button' : undefined);
+    const { semanticTag, semanticRole, tag, type, } = useSemanticButton(props);
     // jsx:
     return (React.createElement(ActionControl, { ...restProps, 
         // semantics:
