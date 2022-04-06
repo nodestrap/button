@@ -287,6 +287,9 @@ export const useSemanticButton = (props) => {
         type,
     };
 };
+// defaults:
+const defaultOutlined = false;
+const defaultMild = false;
 export function Button(props) {
     // styles:
     const sheet = useButtonSheet();
@@ -296,18 +299,20 @@ export function Button(props) {
     // rest props:
     const { 
     // accessibilities:
-    label, active: activeAsPress, // aliasing active to press
-    ...restProps } = props;
+    label, press, 
+    // variants:
+    outlined = defaultOutlined, mild = defaultMild, ...restProps } = props;
     // fn props:
     const { semanticTag, semanticRole, tag, type, } = useSemanticButton(props);
+    const pressFn = press ?? ((!!props.active && !outlined && !mild) || undefined); // if (active (as press) === false) => uncontrolled press
     // jsx:
     return (React.createElement(ActionControl, { ...restProps, 
         // semantics:
         semanticTag: semanticTag, semanticRole: semanticRole, tag: tag, "aria-label": props['aria-label'] ?? label, 
         // accessibilities:
-        enabled: props.enabled ?? !(props.disabled ?? false), press: props.press ?? (activeAsPress || undefined), 
+        enabled: props.enabled ?? !(props.disabled ?? false), press: pressFn, 
         // variants:
-        mild: props.mild ?? false, 
+        outlined: outlined, mild: mild, 
         // classes:
         mainClass: props.mainClass ?? sheet.main, variantClasses: [...(props.variantClasses ?? []),
             orientationVariant.class,
